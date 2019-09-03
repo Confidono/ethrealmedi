@@ -1,0 +1,85 @@
+.story {
+    width: 75%;
+    margin: 0 auto;
+    box-shadow: 0 3rem 6rem rgba($color-black, .1);
+    background-color: rgba($color-white, .6); 
+    border-radius: .3rem;
+    padding: 6rem;
+    padding-left: 9rem; //remaking the padding after clippath and transform.
+    font-size: $default-font-size;
+    transform: skewX(-12deg); //to make the unique shape in the box that is skew
+
+    @include respond(tab-port) {
+        width: 100%;
+        padding: 4rem;
+        padding-left: 7rem;
+
+    }
+
+    @include respond(phone) {
+        transform: skewX(0);
+    }
+    
+    & > * { //selector that selects everything
+        transform: skewX(12deg); //this will transform everthing to normal. must add skew to all others because of the transform property
+    }
+
+    &__shape {
+        width: 15rem;
+        height: 15rem;
+        background-color: orangered;
+        float: left;
+        -webkit-shape-outside: circle(50% at 50% 50%);
+        shape-outside: circle(50% at 50% 50%); //defines where the content flows around an element only works when element is floated. first 50% is the 50% of the width and height(radius) diameter will then be 15. 50% 50% is centre horizontally and vertically. It will also only work when element has defined dimensions etc height and width.
+        -webkit-clip-path: circle(50% at 50% 50%);
+        clip-path: circle(50% at 50% 50%); //how to make the element look like a circle
+        transform: translateX(-3rem) skewX(12deg); //how to add space between circle and text. best to use this than margins and padding
+        position: relative;
+
+        @include respond(phone) {
+            transform: translateX(-3rem) skewX(0);
+        }
+        
+    }
+
+    &__img {
+        height: 100%; //if you state a width and image is wider than height itll only show half the image. best to state height in this circumstance.
+        transform: translateX(-4rem) scale(1.4);
+        transition: all .5s;
+        backface-visibility: hidden; //when something weird happens during translates and what not, use backface visibility
+    }
+
+
+    &__text {
+        transform: skewX(12deg); //this will transform everthing to normal
+
+        @include respond(phone) {
+            transform: skewX(0);
+        }
+    }
+
+    &__caption {
+        position: absolute; //want the text on top of the shape
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, 20%); //put it down so that when we hover itll look like its going up
+        color: $color-white;
+        font-weight: bolder;
+        text-transform: uppercase;
+        font-size: 1.7rem;
+        text-align: center;
+        opacity: 0;
+        transition: all .5s;
+        backface-visibility: hidden; //fix the glitch shaking
+    }
+
+    &:hover &__caption {
+        opacity: 1;
+        transform:translate(-50%, -50%);  
+    }
+
+    &:hover &__img {
+        transform: translateX(-4rem) scale(1);  
+        filter: blur(.3rem) brightness(80%);
+    }
+}
